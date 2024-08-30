@@ -10,7 +10,7 @@ type ButtonProps = {
 const Button = ({ children, isLoading, isDisabled, type }: ButtonProps) => {
   return (
     <button
-      className={`bg-[#EF8730] py-[10px] px-[5px] rounded-[5px] text-neutral-50`}
+      className={`disabled:opacity-[0.3] disabled:cursor-not-allowed bg-[#EF8730] py-[10px] px-[5px] rounded-[5px] text-neutral-50`}
       type={type}
       disabled={isDisabled}
     >
