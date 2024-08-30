@@ -1,36 +1,16 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { BiSolidUpArrow, BiSolidDownArrow } from "react-icons/bi";
 import { IoSearchSharp } from "react-icons/io5";
-
-type option = {
-  label: string;
-  value: string;
-};
+import { optionT } from "../../types";
 
 type SelectProps = {
-  optons: option[];
-  handleSelect: () => void;
+  options: optionT[];
+  handleSelect: (option: optionT) => void;
+  error?: string;
+  label: string;
 };
-const Select = () => {
+const Select = ({ error, handleSelect, options, label }: SelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const dummyOptions = [
-    {
-      label: "First Bank",
-      value: "232",
-    },
-    {
-      label: "FCMB",
-      value: "102",
-    },
-    {
-      label: "Access Bank",
-      value: "112",
-    },
-    {
-      label: "Fidelity Bank",
-      value: "310",
-    },
-  ];
 
   const handleToggleDropDown = () => {
     setIsOpen(!isOpen);
@@ -43,7 +23,7 @@ const Select = () => {
   return (
     <div className="w-full  relative z-40 ">
       {/* Select Label */}
-      <label>Destination Bank</label>
+      <label>{label}</label>
       {/* Select Tab */}
       <button
         type="button"
@@ -67,9 +47,14 @@ const Select = () => {
             />
           </div>
           <ul className="h-[150px] overflow-x-scroll flex flex-col">
-            {dummyOptions.map((option) => {
+            {options.map((option) => {
               return (
-                <li className="hover:text-neutral-50 px-[10px] cursor-pointer py-[10px] hover:bg-[#EF8730]">
+                <li
+                  onClick={() => {
+                    handleSelect;
+                  }}
+                  className="hover:text-neutral-50 px-[10px] cursor-pointer py-[10px] hover:bg-[#EF8730]"
+                >
                   {option.label}
                 </li>
               );
@@ -77,6 +62,7 @@ const Select = () => {
           </ul>
         </div>
       )}
+      {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
     </div>
   );
 };
