@@ -2,6 +2,15 @@ import React, { useState } from "react";
 import { BiSolidUpArrow, BiSolidDownArrow } from "react-icons/bi";
 import { IoSearchSharp } from "react-icons/io5";
 
+type option = {
+  label: string;
+  value: string;
+};
+
+type SelectProps = {
+  optons: option[];
+  handleSelect: () => void;
+};
 const Select = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dummyOptions = [
