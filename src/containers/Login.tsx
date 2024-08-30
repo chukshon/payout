@@ -2,8 +2,10 @@ import Button from "../components/ui/Button";
 import { login } from "../services/requests";
 import { useMutation } from "@tanstack/react-query";
 import { generateBasicAuthHeader } from "../utils";
+import { useAuth } from "../context/authContext";
 
 const Login = () => {
+  const { setIsLoggedIn } = useAuth();
   const loginMutation = useMutation({
     mutationFn: async () => {
       return login(
@@ -18,6 +20,7 @@ const Login = () => {
         "auth",
         JSON.stringify(data.data.responseBody.accessToken)
       );
+      setIsLoggedIn(true);
     },
     onError: () => {
       alert("Something went wrong");

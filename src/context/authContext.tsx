@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, ReactNode } from "react";
 
 interface AuthContextProps {
-  authToken: string;
+  authToken: string | null;
   isLoggedIn: boolean;
   setIsLoggedIn: (isLoggedIn: boolean) => void;
 }
@@ -9,7 +9,7 @@ interface AuthContextProps {
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const authToken = JSON.stringify(localStorage.getItem("token"));
+  const authToken = localStorage.getItem("auth");
   const [isLoggedIn, setIsLoggedIn] = useState(!!authToken);
 
   return (
