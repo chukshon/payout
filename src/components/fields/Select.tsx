@@ -8,14 +8,25 @@ type SelectProps = {
   handleSelect: (option: optionT) => void;
   error?: string;
   label: string;
+  value: string;
 };
-const Select = ({ error, handleSelect, options, label }: SelectProps) => {
+const Select = ({
+  error,
+  handleSelect,
+  options,
+  label,
+  value,
+}: SelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleToggleDropDown = () => {
     setIsOpen(!isOpen);
   };
 
+  const onSelect = (option: optionT) => {
+    setIsOpen(false);
+    handleSelect(option);
+  };
   const handleSearchBank = () => {
     console.log("search");
   };
@@ -32,7 +43,7 @@ const Select = ({ error, handleSelect, options, label }: SelectProps) => {
           isOpen ? "border-b-[0px]" : ""
         }`}
       >
-        <p>Select Bank</p>
+        <p>{value ?? "Select Bank"}</p>
         {!isOpen ? <BiSolidDownArrow /> : <BiSolidUpArrow />}
       </button>
       {/* Select Options */}
@@ -50,8 +61,9 @@ const Select = ({ error, handleSelect, options, label }: SelectProps) => {
             {options.map((option) => {
               return (
                 <li
+                  key={option.value}
                   onClick={() => {
-                    handleSelect;
+                    onSelect(option);
                   }}
                   className="hover:text-neutral-50 px-[10px] cursor-pointer py-[10px] hover:bg-[#EF8730]"
                 >

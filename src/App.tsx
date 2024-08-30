@@ -14,12 +14,15 @@ function App() {
   const {
     register,
     handleSubmit,
+    setValue,
+    watch,
     formState: { errors },
   } = useForm<PayoutFormInputs>({
     resolver: zodResolver(payoutFormSchema),
     defaultValues: {
       destinationAccountNumber: undefined,
       bankCode: undefined,
+      bankName: undefined,
       amountToBePaid: undefined,
       destinationAccountName: undefined,
     },
@@ -45,10 +48,13 @@ function App() {
   ];
 
   const handleSelectBank = (option: optionT) => {
-    console.log("hello");
+    setValue("bankCode", option.value);
+    setValue("bankName", option.label);
   };
 
-  const onSubmit = () => {};
+  const onSubmit: SubmitHandler<PayoutFormInputs> = (data) => {
+    console.log(data);
+  };
   return (
     <main className="bg-[#D2D8DE] flex justify-center items-center h-[100vh]">
       <div className="bg-neutral-50 w-[600px] h-[600px] rounded-[8px] py-[20px] px-[20px]">
@@ -71,6 +77,7 @@ function App() {
             error={errors.bankCode?.message}
             label="Destination Bank"
             handleSelect={handleSelectBank}
+            value={watch("bankName")}
           />
           <Input
             name="amountToBePaid"
