@@ -4,7 +4,7 @@ export const login = (token: string) => {
   return axios({
     method: "post",
     url: "https://sandbox.monnify.com/api/v1/auth/login",
-    headers: { Authorization: `Bearer ${token}` },
+    headers: { Authorization: `${token}` },
   });
 };
 
