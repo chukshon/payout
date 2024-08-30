@@ -24,7 +24,7 @@ function App() {
         <h2 className="text-center text-[30px] font-[600]">Payout Form</h2>
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col gap-[10px] mt-[20px]"
+          className="flex flex-col gap-[10px] mt-[20px] "
         >
           <Input
             name="destinationAccountNumber"
@@ -36,6 +36,15 @@ function App() {
             label="Destination Account Number"
           />
           <Select />
+          <Input
+            name="destinationAccountNumber"
+            type="text"
+            placeholder="Account Number"
+            register={register}
+            required
+            error={errors.destinationAccountNumber?.message}
+            label="Destination Account Number"
+          />
           <Button />
         </form>
       </div>
