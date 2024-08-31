@@ -16,10 +16,7 @@ const Login = () => {
       );
     },
     onSuccess: (data) => {
-      localStorage.setItem(
-        "auth",
-        JSON.stringify(data.data.responseBody.accessToken)
-      );
+      localStorage.setItem("auth", data.data.responseBody.accessToken);
       setIsLoggedIn(true);
     },
     onError: () => {
