@@ -7,26 +7,13 @@ import { payoutFormSchema } from "../schema/PayoutFormSchema";
 import { z } from "zod";
 import { optionT, BankT } from "../types";
 import { useQuery } from "@tanstack/react-query";
-import { getBanks } from "../services/requests";
+import { getBanks, validateAccount } from "../services/requests";
 import { useAuth } from "../context/authContext";
 import { useState } from "react";
 
 type PayoutFormInputs = z.infer<typeof payoutFormSchema>;
 
 const PayoutForm = () => {
-  const { authToken } = useAuth();
-  const bankQuery: any = useQuery({
-    queryKey: [],
-    queryFn: () => getBanks(authToken as string),
-  });
-
-  const banks = bankQuery?.data?.data?.responseBody?.map((bank: BankT) => {
-    return {
-      label: bank.name,
-      value: bank.code,
-    };
-  });
-
   const {
     register,
     handleSubmit,
@@ -44,24 +31,29 @@ const PayoutForm = () => {
     },
   });
 
-  const dummyOptions = [
-    {
-      label: "First Bank",
-      value: "232",
-    },
-    {
-      label: "FCMB",
-      value: "102",
-    },
-    {
-      label: "Access Bank",
-      value: "112",
-    },
-    {
-      label: "Fidelity Bank",
-      value: "310",
-    },
-  ];
+  const bankCode = watch("bankCode");
+  const accountNumber = watch("destinationAccountNumber");
+  const { authToken } = useAuth();
+  const bankQuery: any = useQuery({
+    queryKey: [],
+    queryFn: () => getBanks(authToken as string),
+  });
+
+  const validateAccountQuery: any = useQuery({
+    queryKey: [accountNumber, bankCode],
+    queryFn: () =>
+      validateAccount(authToken as string, accountNumber, bankCode),
+    enabled: accountNumber?.length === 10 && bankCode !== undefined,
+  });
+
+  const banks = bankQuery?.data?.data?.responseBody?.map((bank: BankT) => {
+    return {
+      label: bank.name,
+      value: bank.code,
+    };
+  });
+
+  const selectedAccount = validateAccountQuery?.data?.responseBody;
 
   const handleSelectBank = (option: optionT) => {
     setValue("bankCode", option.value);
