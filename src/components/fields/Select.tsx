@@ -35,7 +35,7 @@ const Select = ({
     <div className="w-full  relative z-40 ">
       {/* Select Label */}
       <label>{label}</label>
-      {/* Select Tab */}
+      {/* Select Toggle */}
       <button
         type="button"
         onClick={handleToggleDropDown}
@@ -46,9 +46,10 @@ const Select = ({
         <p>{value ?? "Select Bank"}</p>
         {!isOpen ? <BiSolidDownArrow /> : <BiSolidUpArrow />}
       </button>
-      {/* Select Options */}
+      {/* Select Options Container */}
       {isOpen && (
         <div className="bg-neutral-50 w-full z-40 absolute flex flex-col gap-[0px] rounded-br-[3px] rounded-bl-[3px] border-t-[0px] border-[2px] border-neutral-500 ">
+          {/* Select Search */}
           <div className="px-[10px] flex items-center gap-[0px] border-t-[#EF8730] border-t-[3px] border-b-[2px] ">
             <IoSearchSharp size={20} strokeWidth={2} />
             <input
@@ -57,6 +58,7 @@ const Select = ({
               className="placeholder:italic  border-neutral-500 py-[10px] w-full outline-none px-[10px]"
             />
           </div>
+          {/* Select Options */}
           <ul className="h-[150px] overflow-x-scroll flex flex-col">
             {options.map((option) => {
               return (

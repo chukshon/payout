@@ -77,15 +77,6 @@ const PayoutForm = () => {
         value={watch("bankName")}
       />
       <Input
-        name="amountToBePaid"
-        type="text"
-        placeholder="Amount"
-        register={register}
-        required
-        error={errors.amountToBePaid?.message}
-        label="Amount to be paid"
-      />
-      <Input
         name="destinationAccountName"
         type="number"
         placeholder="Account Name"
@@ -95,6 +86,16 @@ const PayoutForm = () => {
         error={errors.destinationAccountName?.message}
         label="Destination Account Name"
       />
+      <Input
+        name="amountToBePaid"
+        type="text"
+        placeholder="Amount"
+        register={register}
+        required
+        error={errors.amountToBePaid?.message}
+        label="Amount to be paid"
+      />
+
       <Button isLoading={false} isDisabled={false} type="submit">
         Send Transaction
       </Button>
