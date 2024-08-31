@@ -5,11 +5,28 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { payoutFormSchema } from "../schema/PayoutFormSchema";
 import { z } from "zod";
-import { optionT } from "../types";
+import { optionT, BankT } from "../types";
+import { useQuery } from "@tanstack/react-query";
+import { getBanks } from "../services/requests";
+import { useAuth } from "../context/authContext";
+import { useState } from "react";
 
 type PayoutFormInputs = z.infer<typeof payoutFormSchema>;
 
 const PayoutForm = () => {
+  const { authToken } = useAuth();
+  const bankQuery: any = useQuery({
+    queryKey: [],
+    queryFn: () => getBanks(authToken as string),
+  });
+
+  const banks = bankQuery?.data?.data?.responseBody?.map((bank: BankT) => {
+    return {
+      label: bank.name,
+      value: bank.code,
+    };
+  });
+
   const {
     register,
     handleSubmit,
@@ -70,7 +87,7 @@ const PayoutForm = () => {
         label="Destination Account Number"
       />
       <Select
-        options={dummyOptions}
+        options={banks}
         error={errors.bankCode?.message}
         label="Destination Bank"
         handleSelect={handleSelectBank}
