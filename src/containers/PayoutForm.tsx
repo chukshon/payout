@@ -9,6 +9,7 @@ import { optionT } from "../types";
 import useGetBanks from "../queries/useGetBanks";
 import useValidateAccount from "../queries/useValidateAccount";
 import SelectedAccountCard from "../components/ui/SelectedAccountCard";
+import useInitiateTransfer from "../mutations/useInitiateTransfer";
 
 type PayoutFormInputs = z.infer<typeof payoutFormSchema>;
 
@@ -18,6 +19,7 @@ const PayoutForm = () => {
     handleSubmit,
     setValue,
     watch,
+    reset,
     formState: { errors },
   } = useForm<PayoutFormInputs>({
     resolver: zodResolver(payoutFormSchema),
@@ -36,14 +38,24 @@ const PayoutForm = () => {
     accountNumber,
     bankCode
   );
-
+  const { initiateTransferMutation } = useInitiateTransfer();
   const handleSelectBank = (option: optionT) => {
     setValue("bankCode", option.value);
     setValue("bankName", option.label);
   };
 
-  const onSubmit: SubmitHandler<PayoutFormInputs> = (data) => {
-    console.log(data, "data");
+  const onSubmit: SubmitHandler<PayoutFormInputs> = async (data) => {
+    const payload = {
+      amount: Number(data.amountToBePaid),
+      reference: "testing3",
+      narration: "testing",
+      destinationBankCode: data.bankCode,
+      destinationAccountNumber: data.destinationAccountNumber,
+      currency: "NGN",
+      sourceAccountNumber: "5978398182",
+    };
+    await initiateTransferMutation.mutateAsync(payload);
+    reset();
   };
 
   return (
@@ -87,7 +99,11 @@ const PayoutForm = () => {
         label="Amount to be paid"
       />
 
-      <Button isLoading={false} isDisabled={false} type="submit">
+      <Button
+        isLoading={initiateTransferMutation.isLoading}
+        isDisabled={initiateTransferMutation.isLoading}
+        type="submit"
+      >
         Send Transaction
       </Button>
     </form>
