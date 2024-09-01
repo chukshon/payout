@@ -1,6 +1,6 @@
 import Button from "../components/ui/Button";
 import { login } from "../services/requests";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation } from "react-query";
 import { generateBasicAuthHeader } from "../utils";
 import { useAuth } from "../context/authContext";
 
@@ -32,8 +32,8 @@ const Login = () => {
       <h2 className="text-[30px] font-[600] text-center">Login</h2>
       <Button
         onClick={handleLogin}
-        isLoading={loginMutation.isPending}
-        isDisabled={loginMutation.isPending}
+        isLoading={loginMutation.isLoading}
+        isDisabled={loginMutation.isLoading}
         type="button"
       >
         Login Here
