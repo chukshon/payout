@@ -1,7 +1,7 @@
 import { useQuery } from "react-query";
 import { getBanks } from "../services/requests";
 import { useAuth } from "../context/authContext";
-import { BankT } from "../types";
+import { BankT, optionT } from "../types";
 
 function useGetBanks() {
   const { authToken, setIsLoggedIn } = useAuth();
@@ -14,7 +14,7 @@ function useGetBanks() {
     },
   });
 
-  const Banks: BankT[] = data?.data?.responseBody?.map((bank: BankT) => {
+  const Banks: optionT[] = data?.data?.responseBody?.map((bank: BankT) => {
     return {
       label: bank.name,
       value: bank.code,
