@@ -25,11 +25,13 @@ const PayoutForm = () => {
     reset,
     formState: { errors },
   } = useForm<PayoutFormInputs>({
+    mode: "onChange",
+    reValidateMode: "onChange",
     resolver: zodResolver(payoutFormSchema),
     defaultValues: {
       destinationAccountNumber: "",
       bankCode: "",
-      bankName: undefined,
+      bankName: "",
       amountToBePaid: undefined,
     },
   });
