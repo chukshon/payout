@@ -9,6 +9,8 @@ type SelectProps = {
   error?: string;
   label: string;
   value: string;
+  isLoading: boolean;
+  loadingText: string;
 };
 const Select = ({
   error,
@@ -16,11 +18,15 @@ const Select = ({
   options,
   label,
   value,
+  isLoading,
+  loadingText,
 }: SelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleToggleDropDown = () => {
-    setIsOpen(!isOpen);
+    if (!isLoading) {
+      setIsOpen(!isOpen);
+    }
   };
 
   const onSelect = (option: optionT) => {
@@ -36,6 +42,7 @@ const Select = ({
       {/* Select Label */}
       <label>{label}</label>
       {/* Select Toggle */}
+
       <button
         type="button"
         onClick={handleToggleDropDown}
@@ -43,7 +50,7 @@ const Select = ({
           isOpen ? "border-b-[0px]" : ""
         }`}
       >
-        <p>{value ?? "Select Bank"}</p>
+        {isLoading ? <>{loadingText}</> : <p>{value ?? "Select Bank"}</p>}
         {!isOpen ? <BiSolidDownArrow /> : <BiSolidUpArrow />}
       </button>
       {/* Select Options Container */}

@@ -5,11 +5,9 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { payoutFormSchema } from "../schema/PayoutFormSchema";
 import { z } from "zod";
-import { optionT, BankT } from "../types";
-import { useQuery } from "@tanstack/react-query";
-import { getBanks, validateAccount } from "../services/requests";
-import { useAuth } from "../context/authContext";
-import { useState } from "react";
+import { optionT } from "../types";
+import useGetBanks from "../queries/useGetBanks";
+import useValidateAccount from "../queries/useValidateAccount";
 
 type PayoutFormInputs = z.infer<typeof payoutFormSchema>;
 
@@ -30,30 +28,11 @@ const PayoutForm = () => {
       destinationAccountName: undefined,
     },
   });
-
   const bankCode = watch("bankCode");
   const accountNumber = watch("destinationAccountNumber");
-  const { authToken } = useAuth();
-  const bankQuery: any = useQuery({
-    queryKey: [],
-    queryFn: () => getBanks(authToken as string),
-  });
 
-  const validateAccountQuery: any = useQuery({
-    queryKey: [accountNumber, bankCode],
-    queryFn: () =>
-      validateAccount(authToken as string, accountNumber, bankCode),
-    enabled: accountNumber?.length === 10 && bankCode !== undefined,
-  });
-
-  const banks = bankQuery?.data?.data?.responseBody?.map((bank: BankT) => {
-    return {
-      label: bank.name,
-      value: bank.code,
-    };
-  });
-
-  const selectedAccount = validateAccountQuery?.data?.responseBody;
+  const { Banks, isLoadingBanks } = useGetBanks();
+  const { AccountDetails } = useValidateAccount(accountNumber, bankCode);
 
   const handleSelectBank = (option: optionT) => {
     setValue("bankCode", option.value);
@@ -63,6 +42,7 @@ const PayoutForm = () => {
   const onSubmit: SubmitHandler<PayoutFormInputs> = (data) => {
     console.log(data);
   };
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -79,7 +59,9 @@ const PayoutForm = () => {
         label="Destination Account Number"
       />
       <Select
-        options={banks}
+        isLoading={isLoadingBanks}
+        loadingText={"Loading banks..."}
+        options={Banks}
         error={errors.bankCode?.message}
         label="Destination Bank"
         handleSelect={handleSelectBank}
