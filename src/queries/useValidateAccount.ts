@@ -5,7 +5,11 @@ import { AcccountDetailsT } from "../types";
 
 function useValidateAccount(accountNumber: string, bankCode: string) {
   const { authToken, setIsLoggedIn } = useAuth();
-  const { data, isLoading: isValidatingAccountDetails } = useQuery({
+  const {
+    data,
+    isLoading: isValidatingAccountDetails,
+    error,
+  } = useQuery({
     queryKey: [accountNumber, bankCode],
     queryFn: () =>
       validateAccount(authToken as string, accountNumber, bankCode),
@@ -19,9 +23,12 @@ function useValidateAccount(accountNumber: string, bankCode: string) {
 
   const AccountDetails: AcccountDetailsT = data?.data?.responseBody;
 
+  const errorMessage = (error as any)?.response?.data?.responseMessage;
+
   return {
     AccountDetails,
     isValidatingAccountDetails,
+    errorMessage,
   };
 }
 

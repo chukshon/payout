@@ -34,11 +34,12 @@ const PayoutForm = () => {
   const accountNumber = watch("destinationAccountNumber");
 
   const { Banks, isLoadingBanks } = useGetBanks();
-  const { AccountDetails, isValidatingAccountDetails } = useValidateAccount(
-    accountNumber,
-    bankCode
-  );
+
+  const { AccountDetails, isValidatingAccountDetails, errorMessage } =
+    useValidateAccount(accountNumber, bankCode);
+
   const { initiateTransferMutation } = useInitiateTransfer();
+
   const handleSelectBank = (option: optionT) => {
     setValue("bankCode", option.value);
     setValue("bankName", option.label);
@@ -47,8 +48,8 @@ const PayoutForm = () => {
   const onSubmit: SubmitHandler<PayoutFormInputs> = async (data) => {
     const payload = {
       amount: Number(data.amountToBePaid),
-      reference: "testing3",
-      narration: "testing",
+      reference: "testing5",
+      narration: "transfer",
       destinationBankCode: data.bankCode,
       destinationAccountNumber: data.destinationAccountNumber,
       currency: "NGN",
@@ -64,15 +65,6 @@ const PayoutForm = () => {
       className="flex flex-col gap-[20px] mt-[20px] "
     >
       <h2 className="text-center text-[30px] font-[600]">Payout Form</h2>
-      <Input
-        name="destinationAccountNumber"
-        type="text"
-        placeholder="Account Number"
-        register={register}
-        required
-        error={errors.destinationAccountNumber?.message}
-        label="Destination Account Number"
-      />
       <Select
         isLoading={isLoadingBanks}
         loadingText={"Loading banks..."}
@@ -82,8 +74,19 @@ const PayoutForm = () => {
         handleSelect={handleSelectBank}
         value={watch("bankName")}
       />
+      <Input
+        name="destinationAccountNumber"
+        type="text"
+        placeholder="Account Number"
+        register={register}
+        required
+        error={errors.destinationAccountNumber?.message}
+        label="Destination Account Number"
+      />
+
       {accountNumber.length === 10 && bankCode.length > 0 && (
         <SelectedAccountCard
+          error={errorMessage as string}
           accountName={AccountDetails?.accountName}
           isLoading={isValidatingAccountDetails}
         />
