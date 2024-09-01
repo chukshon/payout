@@ -51,17 +51,21 @@ const PayoutForm = () => {
   };
 
   const onSubmit: SubmitHandler<PayoutFormInputs> = async (data) => {
-    const payload = {
-      amount: Number(data.amountToBePaid),
-      reference: `reference-${uuidv4()}`,
-      narration: "transfer",
-      destinationBankCode: data.bankCode,
-      destinationAccountNumber: data.destinationAccountNumber,
-      currency: "NGN",
-      sourceAccountNumber: CONFIG.SOURCE_ACCOUNT_NUMBER,
-    };
-    await initiateTransferMutation.mutateAsync(payload);
-    reset();
+    if (!errorMessage) {
+      const payload = {
+        amount: Number(data.amountToBePaid),
+        reference: `reference-${uuidv4()}`,
+        narration: "transfer",
+        destinationBankCode: data.bankCode,
+        destinationAccountNumber: data.destinationAccountNumber,
+        currency: "NGN",
+        sourceAccountNumber: CONFIG.SOURCE_ACCOUNT_NUMBER,
+      };
+      await initiateTransferMutation.mutateAsync(payload);
+      reset();
+    } else {
+      alert(errorMessage);
+    }
   };
 
   return (
