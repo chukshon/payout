@@ -18,13 +18,14 @@ const Input = ({
   register,
   required,
   isDisabled,
+  type,
 }: InputFieldProps) => {
   return (
     <div className="w-full flex flex-col gap-[5px]">
       <label>{label}</label>
       <input
         placeholder={placeholder}
-        type="text"
+        type={type}
         readOnly={isDisabled}
         {...register(name, { required })}
         className={`${

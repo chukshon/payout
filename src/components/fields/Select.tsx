@@ -36,7 +36,7 @@ const Select = ({
     handleSelect(option);
     setSearchTerm(""); // Clear search term when an option is selected
   };
-  const handleSearchBank = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
   };
   const filteredOptions = options?.filter((option) =>
@@ -66,7 +66,7 @@ const Select = ({
           <div className="px-[10px] flex items-center gap-[0px] border-t-[#EF8730] border-t-[3px] border-b-[2px] ">
             <IoSearchSharp size={20} strokeWidth={2} />
             <input
-              onChange={handleSearchBank}
+              onChange={handleSearch}
               value={searchTerm}
               placeholder="Search"
               type="text"

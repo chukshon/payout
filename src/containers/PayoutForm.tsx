@@ -23,6 +23,7 @@ const PayoutForm = () => {
     setValue,
     watch,
     reset,
+    clearErrors,
     formState: { errors },
   } = useForm<PayoutFormInputs>({
     mode: "onChange",
@@ -31,8 +32,7 @@ const PayoutForm = () => {
     defaultValues: {
       destinationAccountNumber: "",
       bankCode: "",
-      bankName: "",
-      amountToBePaid: undefined,
+      bankName: undefined,
     },
   });
   const bankCode = watch("bankCode");
@@ -51,12 +51,13 @@ const PayoutForm = () => {
   const handleSelectBank = (option: optionT) => {
     setValue("bankCode", option.value);
     setValue("bankName", option.label);
+    clearErrors("bankCode");
   };
 
   const onSubmit: SubmitHandler<PayoutFormInputs> = async (data) => {
     if (!errorMessage) {
       const payload = {
-        amount: Number(data.amountToBePaid),
+        amount: data.amountToBePaid,
         reference: `reference-${uuidv4()}`,
         narration: "transfer",
         destinationBankCode: data.bankCode,
@@ -111,7 +112,7 @@ const PayoutForm = () => {
       {/* Amount to be paid */}
       <Input
         name="amountToBePaid"
-        type="text"
+        type="number"
         placeholder="Amount"
         register={register}
         required
