@@ -7,10 +7,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { payoutFormSchema } from "../schema/PayoutFormSchema";
 import { z } from "zod";
 import { optionT } from "../types";
+import { v4 as uuidv4 } from "uuid";
 import useGetBanks from "../queries/useGetBanks";
 import useValidateAccount from "../queries/useValidateAccount";
 import useInitiateTransfer from "../mutations/useInitiateTransfer";
-import { v4 as uuidv4 } from "uuid";
+import { CONFIG } from "../config";
 
 type PayoutFormInputs = z.infer<typeof payoutFormSchema>;
 
@@ -57,7 +58,7 @@ const PayoutForm = () => {
       destinationBankCode: data.bankCode,
       destinationAccountNumber: data.destinationAccountNumber,
       currency: "NGN",
-      sourceAccountNumber: "5978398182",
+      sourceAccountNumber: CONFIG.SOURCE_ACCOUNT_NUMBER,
     };
     await initiateTransferMutation.mutateAsync(payload);
     reset();
