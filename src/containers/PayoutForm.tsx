@@ -116,6 +116,7 @@ const PayoutForm = () => {
         isLoading={initiateTransferMutation.isLoading}
         isDisabled={initiateTransferMutation.isLoading}
         type="submit"
+        extraClassNames="mt-[50px]"
       >
         Send Transaction
       </Button>

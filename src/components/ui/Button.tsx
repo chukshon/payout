@@ -6,6 +6,7 @@ type ButtonProps = {
   isDisabled: boolean;
   type: "button" | "submit";
   onClick?: () => void;
+  extraClassNames?: string;
 };
 
 const Button = ({
@@ -14,11 +15,12 @@ const Button = ({
   isDisabled,
   type,
   onClick,
+  extraClassNames,
 }: ButtonProps) => {
   return (
     <button
       onClick={onClick}
-      className={`disabled:opacity-[0.3] disabled:cursor-not-allowed bg-[#EF8730] py-[10px] px-[5px] rounded-[5px] text-neutral-50`}
+      className={`${extraClassNames} disabled:opacity-[0.3] disabled:cursor-not-allowed bg-[#EF8730] py-[10px] px-[5px] rounded-[5px] text-neutral-50`}
       type={type}
       disabled={isDisabled}
     >
