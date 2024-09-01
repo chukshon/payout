@@ -18,3 +18,13 @@ export type AcccountDetailsT = {
   accountName: string;
   bankCode: string;
 };
+
+export type InitiateTransferPayload = {
+  amount: number;
+  reference: string;
+  narration: string;
+  destinationBankCode: string;
+  destinationAccountNumber: string;
+  currency: string;
+  sourceAccountNumber: string;
+};
