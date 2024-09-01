@@ -1,10 +1,11 @@
 import axios from "axios";
 import { InitiateTransferPayload } from "../types";
+import { CONFIG } from "../config";
 
 export const login = (token: string) => {
   return axios({
     method: "post",
-    url: "https://sandbox.monnify.com/api/v1/auth/login",
+    url: `${CONFIG.MONNIFY_BASE_URL}/api/v1/auth/login`,
     headers: { Authorization: `${token}` },
   });
 };
@@ -12,7 +13,7 @@ export const login = (token: string) => {
 export const getBanks = (token: string) => {
   return axios({
     method: "get",
-    url: "https://sandbox.monnify.com/api/v1/banks",
+    url: `${CONFIG.MONNIFY_BASE_URL}/api/v1/banks`,
     headers: { Authorization: `Bearer ${token}` },
   });
 };
@@ -24,7 +25,7 @@ export const validateAccount = (
 ) => {
   return axios({
     method: "get",
-    url: `https://sandbox.monnify.com/api/v1/disbursements/account/validate?accountNumber=${accountNumber}&bankCode=${bankCode}`,
+    url: `${CONFIG.MONNIFY_BASE_URL}/api/v1/disbursements/account/validate?accountNumber=${accountNumber}&bankCode=${bankCode}`,
     headers: { Authorization: `Bearer ${token}` },
   });
 };
@@ -35,7 +36,7 @@ export const initiateTransfer = (
 ) => {
   return axios({
     method: "post",
-    url: "https://sandbox.monnify.com/api/v2/disbursements/single",
+    url: `${CONFIG.MONNIFY_BASE_URL}/api/v2/disbursements/single`,
     headers: { Authorization: `Bearer ${token}` },
     data,
   });
