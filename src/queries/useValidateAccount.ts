@@ -13,10 +13,7 @@ function useValidateAccount(accountNumber: string, bankCode: string) {
     queryKey: [accountNumber, bankCode],
     queryFn: () =>
       validateAccount(authToken as string, accountNumber, bankCode),
-    onError: () => {
-      // setIsLoggedIn(false);
-      // localStorage.clear();
-    },
+    onError: () => {},
     enabled: accountNumber.length === 10 && bankCode.length > 0,
     retry: 0,
   });
