@@ -6,17 +6,17 @@ import { AcccountDetailsT } from "../types";
 function useValidateAccount(accountNumber: string, bankCode: string) {
   const { authToken, setIsLoggedIn } = useAuth();
   const { data, isLoading: isValidatingAccountDetails } = useQuery({
-    queryKey: [],
+    queryKey: [accountNumber, bankCode],
     queryFn: () =>
       validateAccount(authToken as string, accountNumber, bankCode),
     onError: () => {
-      setIsLoggedIn(false);
-      localStorage.clear();
+      // setIsLoggedIn(false);
+      // localStorage.clear();
     },
+    enabled: accountNumber.length === 10 && bankCode.length > 0,
   });
 
-  const AccountDetails: AcccountDetailsT =
-    data?.data?.responseBody?.accountName;
+  const AccountDetails: AcccountDetailsT = data?.data?.responseBody;
 
   return {
     AccountDetails,
