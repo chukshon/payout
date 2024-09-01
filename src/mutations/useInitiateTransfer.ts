@@ -3,11 +3,11 @@ import { useMutation } from "react-query";
 import { useAuth } from "../context/authContext";
 import { InitiateTransferPayload } from "../types";
 
-function useInitiateTransfer(data: InitiateTransferPayload) {
+function useInitiateTransfer() {
   const { authToken } = useAuth();
   const initiateTransferMutation = useMutation({
-    mutationFn: async () => {
-      return initiateTransfer(authToken as string, data);
+    mutationFn: async (payload: InitiateTransferPayload) => {
+      return initiateTransfer(authToken as string, payload);
     },
     onSuccess: (data) => {
       alert("Transfer Successful");
