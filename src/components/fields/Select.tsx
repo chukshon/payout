@@ -22,7 +22,7 @@ const Select = ({
   loadingText,
 }: SelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
-
+  const [searchTerm, setSearchTerm] = useState("");
   const handleToggleDropDown = () => {
     if (!isLoading) {
       setIsOpen(!isOpen);
@@ -32,10 +32,14 @@ const Select = ({
   const onSelect = (option: optionT) => {
     setIsOpen(false);
     handleSelect(option);
+    setSearchTerm(""); // Clear search term when an option is selected
   };
-  const handleSearchBank = () => {
-    console.log("search");
+  const handleSearchBank = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
   };
+  const filteredOptions = options?.filter((option) =>
+    option.label.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="w-full  relative z-40 ">
@@ -60,6 +64,8 @@ const Select = ({
           <div className="px-[10px] flex items-center gap-[0px] border-t-[#EF8730] border-t-[3px] border-b-[2px] ">
             <IoSearchSharp size={20} strokeWidth={2} />
             <input
+              onChange={handleSearchBank}
+              value={searchTerm}
               placeholder="Search"
               type="text"
               className="placeholder:italic  border-neutral-500 py-[10px] w-full outline-none px-[10px]"
@@ -67,7 +73,7 @@ const Select = ({
           </div>
           {/* Select Options */}
           <ul className="h-[150px] overflow-x-scroll flex flex-col">
-            {options.map((option) => {
+            {filteredOptions.map((option) => {
               return (
                 <li
                   key={option.value}
