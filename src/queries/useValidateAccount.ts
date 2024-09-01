@@ -14,6 +14,7 @@ function useValidateAccount(accountNumber: string, bankCode: string) {
       // localStorage.clear();
     },
     enabled: accountNumber.length === 10 && bankCode.length > 0,
+    retry: 0,
   });
 
   const AccountDetails: AcccountDetailsT = data?.data?.responseBody;

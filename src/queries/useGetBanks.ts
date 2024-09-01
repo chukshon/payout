@@ -12,6 +12,7 @@ function useGetBanks() {
       setIsLoggedIn(false);
       localStorage.clear();
     },
+    retry: 0,
   });
 
   const Banks: optionT[] = data?.data?.responseBody?.map((bank: BankT) => {
