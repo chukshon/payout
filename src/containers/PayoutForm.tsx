@@ -10,6 +10,7 @@ import { optionT } from "../types";
 import useGetBanks from "../queries/useGetBanks";
 import useValidateAccount from "../queries/useValidateAccount";
 import useInitiateTransfer from "../mutations/useInitiateTransfer";
+import { v4 as uuidv4 } from "uuid";
 
 type PayoutFormInputs = z.infer<typeof payoutFormSchema>;
 
@@ -51,7 +52,7 @@ const PayoutForm = () => {
   const onSubmit: SubmitHandler<PayoutFormInputs> = async (data) => {
     const payload = {
       amount: Number(data.amountToBePaid),
-      reference: "testing5",
+      reference: `reference-${uuidv4()}`,
       narration: "transfer",
       destinationBankCode: data.bankCode,
       destinationAccountNumber: data.destinationAccountNumber,
