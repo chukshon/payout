@@ -52,7 +52,9 @@ const Select = ({
       <button
         type="button"
         onClick={handleToggleDropDown}
-        className={`w-full cursor-pointer flex justify-between items-center border-[2px] border-neutral-500 px-[10px] py-[5px] rounded-tl-[3px] rounded-tr-[3px]  ${
+        className={`${
+          error ? "border-red-500" : ""
+        } w-full cursor-pointer flex justify-between items-center border-[2px] border-neutral-500 px-[10px] py-[5px] rounded-tl-[3px] rounded-tr-[3px]  ${
           isComponentVisible ? "border-b-[0px]" : ""
         }`}
       >
