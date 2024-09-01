@@ -8,6 +8,7 @@ import { z } from "zod";
 import { optionT } from "../types";
 import useGetBanks from "../queries/useGetBanks";
 import useValidateAccount from "../queries/useValidateAccount";
+import SelectedAccountCard from "../components/ui/SelectedAccountCard";
 
 type PayoutFormInputs = z.infer<typeof payoutFormSchema>;
 
@@ -21,18 +22,20 @@ const PayoutForm = () => {
   } = useForm<PayoutFormInputs>({
     resolver: zodResolver(payoutFormSchema),
     defaultValues: {
-      destinationAccountNumber: undefined,
-      bankCode: undefined,
+      destinationAccountNumber: "",
+      bankCode: "",
       bankName: undefined,
       amountToBePaid: undefined,
-      destinationAccountName: undefined,
     },
   });
   const bankCode = watch("bankCode");
   const accountNumber = watch("destinationAccountNumber");
 
   const { Banks, isLoadingBanks } = useGetBanks();
-  const { AccountDetails } = useValidateAccount(accountNumber, bankCode);
+  const { AccountDetails, isValidatingAccountDetails } = useValidateAccount(
+    accountNumber,
+    bankCode
+  );
 
   const handleSelectBank = (option: optionT) => {
     setValue("bankCode", option.value);
@@ -40,7 +43,7 @@ const PayoutForm = () => {
   };
 
   const onSubmit: SubmitHandler<PayoutFormInputs> = (data) => {
-    console.log(data);
+    console.log(data, "data");
   };
 
   return (
@@ -67,16 +70,13 @@ const PayoutForm = () => {
         handleSelect={handleSelectBank}
         value={watch("bankName")}
       />
-      <Input
-        name="destinationAccountName"
-        type="number"
-        placeholder="Account Name"
-        register={register}
-        required
-        isDisabled={true}
-        error={errors.destinationAccountName?.message}
-        label="Destination Account Name"
-      />
+      {accountNumber.length === 10 && bankCode.length > 0 && (
+        <SelectedAccountCard
+          accountName={AccountDetails?.accountName}
+          isLoading={isValidatingAccountDetails}
+        />
+      )}
+
       <Input
         name="amountToBePaid"
         type="text"
