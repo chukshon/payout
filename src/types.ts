@@ -12,3 +12,9 @@ export type BankT = {
   transferUssdTemplate: string | null;
   ussdTemplate: string | null;
 };
+
+export type AcccountDetailsT = {
+  accountNumber: string;
+  accountName: string;
+  bankCode: string;
+};
