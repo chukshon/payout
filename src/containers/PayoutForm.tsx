@@ -1,6 +1,7 @@
 import Input from "../components/fields/Input";
 import Select from "../components/fields/Select";
 import Button from "../components/ui/Button";
+import { toast } from "react-toastify";
 import SelectedAccountCard from "../components/ui/SelectedAccountCard";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -64,7 +65,7 @@ const PayoutForm = () => {
       await initiateTransferMutation.mutateAsync(payload);
       reset();
     } else {
-      alert(errorMessage);
+      toast(errorMessage);
     }
   };
 
