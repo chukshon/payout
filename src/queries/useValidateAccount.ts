@@ -4,7 +4,7 @@ import { useAuth } from "../context/authContext";
 import { AcccountDetailsT } from "../types";
 
 function useValidateAccount(accountNumber: string, bankCode: string) {
-  const { authToken, setIsLoggedIn } = useAuth();
+  const { authToken } = useAuth();
   const {
     data,
     isLoading: isValidatingAccountDetails,

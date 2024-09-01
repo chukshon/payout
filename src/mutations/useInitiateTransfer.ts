@@ -9,7 +9,7 @@ function useInitiateTransfer() {
     mutationFn: async (payload: InitiateTransferPayload) => {
       return initiateTransfer(authToken as string, payload);
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
       alert("Transfer Successful");
     },
     onError: () => {
