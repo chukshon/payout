@@ -72,16 +72,46 @@ describe("PayoutFormSchema", () => {
         destinationAccountNumber: "1234567890",
         bankCode: "123",
         bankName: "Test Bank",
-        amountToBePaid: "",
+        amountToBePaid: "", // Still test as an empty string
+      };
+
+      const result = payoutFormSchema.safeParse(input);
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        console.log(result.error); // Log the error for debugging
+        expect(result.error.issues[0].message).toBe(
+          "Amount to be paid is required"
+        );
+      }
+    });
+
+    it("should reject if negative", () => {
+      const input = {
+        destinationAccountNumber: "1234567890",
+        bankCode: "123",
+        bankName: "Test Bank",
+        amountToBePaid: -1000, // Pass as a negative number
       };
 
       const result = payoutFormSchema.safeParse(input);
       expect(result.success).toBe(false);
       if (!result.success) {
         expect(result.error.issues[0].message).toBe(
-          "Amount to be paid  is required"
+          "Amount to be paid must be a positive number"
         );
       }
+    });
+
+    it("should accept if a positive number", () => {
+      const input = {
+        destinationAccountNumber: "1234567890",
+        bankCode: "123",
+        bankName: "Test Bank",
+        amountToBePaid: 1000, // Pass as a valid positive number
+      };
+
+      const result = payoutFormSchema.safeParse(input);
+      expect(result.success).toBe(true);
     });
   });
 });
