@@ -1,5 +1,3 @@
-import React from "react";
-
 type SelectedAccountCardProps = {
   accountName: string;
   isLoading: boolean;
@@ -10,11 +8,11 @@ const SelectedAccountCard = ({
   isLoading,
 }: SelectedAccountCardProps) => {
   if (isLoading) {
-    return <>Loading...</>;
+    return <>Validating account...</>;
   }
   return (
     <div className="flex flex-col">
-      <p>{accountName}</p>
+      <p className="text-[#EF8730]">{accountName}</p>
     </div>
   );
 };
