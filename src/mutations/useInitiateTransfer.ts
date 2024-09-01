@@ -2,6 +2,7 @@ import { initiateTransfer } from "../services/requests";
 import { useMutation } from "react-query";
 import { useAuth } from "../context/authContext";
 import { InitiateTransferPayload } from "../types";
+import { toast } from "react-toastify";
 
 function useInitiateTransfer() {
   const { authToken } = useAuth();
@@ -10,10 +11,10 @@ function useInitiateTransfer() {
       return initiateTransfer(authToken as string, payload);
     },
     onSuccess: () => {
-      alert("Transfer Successful");
+      toast("Transfer Successful");
     },
     onError: () => {
-      alert("Something went wrong");
+      toast("Something went wrong");
     },
   });
   return { initiateTransferMutation };

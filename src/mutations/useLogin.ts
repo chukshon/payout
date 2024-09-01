@@ -3,6 +3,7 @@ import { useMutation } from "react-query";
 import { generateBasicAuthHeader } from "../utils";
 import { useAuth } from "../context/authContext";
 import { CONFIG } from "../config";
+import { toast } from "react-toastify";
 
 function useLogin() {
   const { setIsLoggedIn } = useAuth();
@@ -16,11 +17,12 @@ function useLogin() {
       );
     },
     onSuccess: (data) => {
+      toast("Login SuccessFul");
       localStorage.setItem("auth", data.data.responseBody.accessToken);
       setIsLoggedIn(true);
     },
     onError: () => {
-      alert("Something went wrong");
+      toast("Something went wrong");
     },
   });
   return { loginMutation };
