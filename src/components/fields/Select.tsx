@@ -2,6 +2,7 @@ import { useState } from "react";
 import { BiSolidUpArrow, BiSolidDownArrow } from "react-icons/bi";
 import { IoSearchSharp } from "react-icons/io5";
 import { optionT } from "../../types";
+import useClickOutside from "../../hooks/useClickOutside";
 
 type SelectProps = {
   options: optionT[];
@@ -21,16 +22,17 @@ const Select = ({
   isLoading,
   loadingText,
 }: SelectProps) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const { ref, isComponentVisible, setIsComponentVisible } =
+    useClickOutside(false);
   const [searchTerm, setSearchTerm] = useState("");
   const handleToggleDropDown = () => {
     if (!isLoading) {
-      setIsOpen(!isOpen);
+      setIsComponentVisible(!isComponentVisible);
     }
   };
 
   const onSelect = (option: optionT) => {
-    setIsOpen(false);
+    setIsComponentVisible(false);
     handleSelect(option);
     setSearchTerm(""); // Clear search term when an option is selected
   };
@@ -42,7 +44,7 @@ const Select = ({
   );
 
   return (
-    <div className="w-full  relative z-40 ">
+    <div ref={ref} className="w-full  relative z-40 ">
       {/* Select Label */}
       <label>{label}</label>
       {/* Select Toggle */}
@@ -51,14 +53,14 @@ const Select = ({
         type="button"
         onClick={handleToggleDropDown}
         className={`w-full cursor-pointer flex justify-between items-center border-[2px] border-neutral-500 px-[10px] py-[5px] rounded-tl-[3px] rounded-tr-[3px]  ${
-          isOpen ? "border-b-[0px]" : ""
+          isComponentVisible ? "border-b-[0px]" : ""
         }`}
       >
         {isLoading ? <>{loadingText}</> : <p>{value ?? "Select Bank"}</p>}
-        {!isOpen ? <BiSolidDownArrow /> : <BiSolidUpArrow />}
+        {!isComponentVisible ? <BiSolidDownArrow /> : <BiSolidUpArrow />}
       </button>
       {/* Select Options Container */}
-      {isOpen && (
+      {isComponentVisible && (
         <div className="bg-neutral-50 w-full z-40 absolute flex flex-col gap-[0px] rounded-br-[3px] rounded-bl-[3px] border-t-[0px] border-[2px] border-neutral-500 ">
           {/* Select Search */}
           <div className="px-[10px] flex items-center gap-[0px] border-t-[#EF8730] border-t-[3px] border-b-[2px] ">
