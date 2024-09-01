@@ -1,6 +1,7 @@
 import Input from "../components/fields/Input";
 import Select from "../components/fields/Select";
 import Button from "../components/ui/Button";
+import SelectedAccountCard from "../components/ui/SelectedAccountCard";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { payoutFormSchema } from "../schema/PayoutFormSchema";
@@ -8,7 +9,6 @@ import { z } from "zod";
 import { optionT } from "../types";
 import useGetBanks from "../queries/useGetBanks";
 import useValidateAccount from "../queries/useValidateAccount";
-import SelectedAccountCard from "../components/ui/SelectedAccountCard";
 import useInitiateTransfer from "../mutations/useInitiateTransfer";
 
 type PayoutFormInputs = z.infer<typeof payoutFormSchema>;
@@ -33,11 +33,14 @@ const PayoutForm = () => {
   const bankCode = watch("bankCode");
   const accountNumber = watch("destinationAccountNumber");
 
+  // Get Banks Query
   const { Banks, isLoadingBanks } = useGetBanks();
 
+  // Validate Accouny Query
   const { AccountDetails, isValidatingAccountDetails, errorMessage } =
     useValidateAccount(accountNumber, bankCode);
 
+  // InitiateTransfer Mutation
   const { initiateTransferMutation } = useInitiateTransfer();
 
   const handleSelectBank = (option: optionT) => {
@@ -65,6 +68,8 @@ const PayoutForm = () => {
       className="flex flex-col gap-[20px] mt-[20px] "
     >
       <h2 className="text-center text-[30px] font-[600]">Payout Form</h2>
+
+      {/* Select Bank Dropdown */}
       <Select
         isLoading={isLoadingBanks}
         loadingText={"Loading banks..."}
@@ -74,6 +79,7 @@ const PayoutForm = () => {
         handleSelect={handleSelectBank}
         value={watch("bankName")}
       />
+      {/* Destination Account Number Input */}
       <Input
         name="destinationAccountNumber"
         type="text"
@@ -84,6 +90,7 @@ const PayoutForm = () => {
         label="Destination Account Number"
       />
 
+      {/* Account Name */}
       {accountNumber.length === 10 && bankCode.length > 0 && (
         <SelectedAccountCard
           error={errorMessage as string}
@@ -92,6 +99,7 @@ const PayoutForm = () => {
         />
       )}
 
+      {/* Amount to be paid */}
       <Input
         name="amountToBePaid"
         type="text"
