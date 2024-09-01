@@ -1,0 +1,5 @@
+export const CONFIG = {
+  MONNIFY_BASE_URL: import.meta.env.VITE_MONNIFY_BASE_URL,
+  MONNIFY_SECRET_KEY: import.meta.env.VITE_MONNIFY_SECRET_KEY,
+  MONNIFY_API_KEY: import.meta.env.VITE_MONNIFY_API_KEY,
+};
