@@ -25,13 +25,13 @@ cd payout
 Install dependencies::
 
 ```bash
-npm install or yarn
+npm or yarn install
 ```
 
 Run the development server:
 
 ```bash
-npm run dev or yarn run dev
+npm or yarn run dev
 ```
 
 Open the application in your browser:
