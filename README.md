@@ -34,14 +34,14 @@ Run the development server:
 npm or yarn run dev
 ```
 
-Run Test:
-
-```bash
-npm or yarn test
-```
-
 Open the application in your browser:
 
 ```bash
 http://localhost:5173/
+```
+
+Run Test:
+
+```bash
+npm or yarn test
 ```
