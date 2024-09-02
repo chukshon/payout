@@ -13,8 +13,8 @@ function useInitiateTransfer() {
     onSuccess: () => {
       toast("Transfer Successful");
     },
-    onError: () => {
-      toast("Something went wrong");
+    onError: (data: any) => {
+      toast(data.response.data.responseMessage);
     },
   });
   return { initiateTransferMutation };
