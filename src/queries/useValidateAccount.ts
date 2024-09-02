@@ -3,7 +3,7 @@ import { validateAccount } from "../services/requests";
 import { useAuth } from "../context/authContext";
 import { AcccountDetailsT } from "../types";
 
-function useValidateAccount(accountNumber: string, bankCode: string) {
+function useValidateAccount(accountNumber: number, bankCode: string) {
   const { authToken } = useAuth();
   const {
     data,
@@ -14,7 +14,10 @@ function useValidateAccount(accountNumber: string, bankCode: string) {
     queryFn: () =>
       validateAccount(authToken as string, accountNumber, bankCode),
     onError: () => {},
-    enabled: accountNumber.length === 10 && bankCode.length > 0,
+    enabled:
+      accountNumber !== undefined &&
+      String(accountNumber).length === 10 &&
+      bankCode.length > 0,
     retry: 0,
   });
 

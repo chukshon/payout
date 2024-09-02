@@ -30,7 +30,7 @@ const PayoutForm = () => {
     reValidateMode: "onChange",
     resolver: zodResolver(payoutFormSchema),
     defaultValues: {
-      destinationAccountNumber: "",
+      destinationAccountNumber: undefined,
       bankCode: "",
       bankName: undefined,
     },
@@ -61,7 +61,7 @@ const PayoutForm = () => {
         reference: `reference-${uuidv4()}`,
         narration: "transfer",
         destinationBankCode: data.bankCode,
-        destinationAccountNumber: data.destinationAccountNumber,
+        destinationAccountNumber: data.destinationAccountNumber.toString(),
         currency: "NGN",
         sourceAccountNumber: CONFIG.SOURCE_ACCOUNT_NUMBER,
       };
@@ -92,7 +92,7 @@ const PayoutForm = () => {
       {/* Destination Account Number Input */}
       <Input
         name="destinationAccountNumber"
-        type="text"
+        type="number"
         placeholder="Account Number"
         register={register}
         required
@@ -101,7 +101,7 @@ const PayoutForm = () => {
       />
 
       {/* Account Name */}
-      {accountNumber.length === 10 && bankCode.length > 0 && (
+      {String(accountNumber).length === 10 && bankCode.length > 0 && (
         <SelectedAccountCard
           error={errorMessage as string}
           accountName={AccountDetails?.accountName}

@@ -20,7 +20,7 @@ export const getBanks = (token: string) => {
 
 export const validateAccount = (
   token: string,
-  accountNumber: string,
+  accountNumber: number,
   bankCode: string
 ) => {
   return axios({
