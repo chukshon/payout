@@ -2,6 +2,7 @@ import { useQuery } from "react-query";
 import { getBanks } from "../services/requests";
 import { useAuth } from "../context/authContext";
 import { BankT, optionT } from "../types";
+import { toast } from "react-toastify";
 
 function useGetBanks() {
   const { authToken, setIsLoggedIn } = useAuth();
@@ -9,6 +10,7 @@ function useGetBanks() {
     queryKey: [],
     queryFn: () => getBanks(authToken as string),
     onError: () => {
+      toast("Session expired");
       setIsLoggedIn(false);
       localStorage.clear();
     },
