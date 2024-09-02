@@ -16,7 +16,7 @@ describe("PayoutFormSchema", () => {
   describe("destinationAccountNumber", () => {
     it("should reject if less than 10 digits", () => {
       const input = {
-        destinationAccountNumber: "123456789",
+        destinationAccountNumber: "123456789", // Less than 10 digits
         bankCode: "123",
         bankName: "Test Bank",
         amountToBePaid: "1000",
@@ -26,14 +26,14 @@ describe("PayoutFormSchema", () => {
       expect(result.success).toBe(false);
       if (!result.success) {
         expect(result.error.issues[0].message).toBe(
-          "Account Number must be a 10 digit number"
+          "Account number must be exactly 10 digits long"
         );
       }
     });
 
     it("should reject if more than 10 digits", () => {
       const input = {
-        destinationAccountNumber: "12345678901",
+        destinationAccountNumber: "12345678901", // More than 10 digits
         bankCode: "123",
         bankName: "Test Bank",
         amountToBePaid: "1000",
@@ -43,9 +43,38 @@ describe("PayoutFormSchema", () => {
       expect(result.success).toBe(false);
       if (!result.success) {
         expect(result.error.issues[0].message).toBe(
-          "Account Number is too long"
+          "Account number must be exactly 10 digits long"
         );
       }
+    });
+
+    it("should reject if empty", () => {
+      const input = {
+        destinationAccountNumber: "", // Empty string
+        bankCode: "123",
+        bankName: "Test Bank",
+        amountToBePaid: "1000",
+      };
+
+      const result = payoutFormSchema.safeParse(input);
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.issues[0].message).toBe(
+          "Account number is required"
+        );
+      }
+    });
+
+    it("should accept if exactly 10 digits", () => {
+      const input = {
+        destinationAccountNumber: "1234567890", // Exactly 10 digits
+        bankCode: "123",
+        bankName: "Test Bank",
+        amountToBePaid: "1000",
+      };
+
+      const result = payoutFormSchema.safeParse(input);
+      expect(result.success).toBe(true);
     });
   });
 
@@ -53,7 +82,7 @@ describe("PayoutFormSchema", () => {
     it("should reject if empty", () => {
       const input = {
         destinationAccountNumber: "1234567890",
-        bankCode: "",
+        bankCode: "", // Empty string
         bankName: "Test Bank",
         amountToBePaid: "1000",
       };
@@ -72,13 +101,12 @@ describe("PayoutFormSchema", () => {
         destinationAccountNumber: "1234567890",
         bankCode: "123",
         bankName: "Test Bank",
-        amountToBePaid: "", // Still test as an empty string
+        amountToBePaid: "", // Empty string
       };
 
       const result = payoutFormSchema.safeParse(input);
       expect(result.success).toBe(false);
       if (!result.success) {
-        console.log(result.error); // Log the error for debugging
         expect(result.error.issues[0].message).toBe(
           "Amount to be paid is required"
         );
@@ -90,7 +118,7 @@ describe("PayoutFormSchema", () => {
         destinationAccountNumber: "1234567890",
         bankCode: "123",
         bankName: "Test Bank",
-        amountToBePaid: -1000, // Pass as a negative number
+        amountToBePaid: -1000, // Negative number
       };
 
       const result = payoutFormSchema.safeParse(input);
@@ -107,7 +135,7 @@ describe("PayoutFormSchema", () => {
         destinationAccountNumber: "1234567890",
         bankCode: "123",
         bankName: "Test Bank",
-        amountToBePaid: 1000, // Pass as a valid positive number
+        amountToBePaid: 1000, // Positive number
       };
 
       const result = payoutFormSchema.safeParse(input);
