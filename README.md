@@ -40,7 +40,7 @@ Open the application in your browser:
 http://localhost:5173/
 ```
 
-Run Test:
+To Run Test:
 
 ```bash
 npm or yarn test
